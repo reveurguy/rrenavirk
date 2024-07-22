@@ -6,7 +6,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [Google],
     callbacks: {
         async signIn({ user, account, profile }) {
-
+        
             return true;
         },
 
@@ -40,7 +40,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
             return token
         },
-
+        
         async session({session, token}){
             // @ts-ignore
             session.user.id = token.id

@@ -27,3 +27,4 @@ model writings {
   user      users    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
+
