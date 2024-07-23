@@ -27,10 +27,10 @@ async function Authbuttons() {
                     }}
                 >
                     <div className={`flex gap-1`}>
-                        <Link href={`/write`}><Button color="primary" variant="ghost"
-                                                      className="border-none text-primary font-bold">Write</Button></Link>
-                        <Link href={`/profile/${session.user?.id}`}><Button color="primary" variant="ghost"
-                                                                            className="border-none text-primary font-bold mr-2">Profile</Button></Link>
+                        <Link href={`/write`}><Button color="default" variant="ghost"
+                                                      className="border-none text-black font-bold">Write</Button></Link>
+                        <Link href={`/profile/${session.user?.id}`}><Button color="default" variant="ghost"
+                                                                            className="border-none text-black font-bold mr-2">Profile</Button></Link>
                         <Button className="text-white bg-slate-950" type="submit">Sign Out</Button>
                     </div>
                 </form>}

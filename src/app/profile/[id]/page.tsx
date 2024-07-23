@@ -22,8 +22,8 @@ async function Page({params} : {params : {id : string}}) {
     }
     return (
         <div className="flex flex-col md:flex-row gap-2 m-2">
+            {!user && <p className="flex items-center justify-center w-full">User not found!</p>}
             <div className="profiles md:basis-1/3 h-[88vh]">
-                {!user && <p className="">User not found!</p>}
                 {user && visit && <Visitprofile/>}
                 {user && !visit && <Userprofile user={user}/>}
             </div>
