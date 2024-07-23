@@ -5,12 +5,16 @@ import Visitprofile from "@/components/profiles/visitprofile";
 import Userprofile from "@/components/profiles/userprofile";
 import UserProfileDashboard from "@/components/dashboards/userprofiledashboard";
 import VisitProfileDashboard from "@/components/dashboards/visitProfileDashboard";
+import { redirect } from 'next/navigation';
 
 async function Page({params} : {params : {id : string}}) {
-    let user : users, visit;
+    let user : users | null = null, visit:boolean = true;
     try {
         user = await prisma.users.findUnique({where : {id : params.id}})
+        if(user)
         visit = user.id !== params.id
+        else 
+        redirect('/')
     }
     catch (e)
     {
@@ -28,8 +32,6 @@ async function Page({params} : {params : {id : string}}) {
                 {user && visit && <VisitProfileDashboard user={user}/>}
                 {user && !visit && <UserProfileDashboard user={user}/>}
             </div>
-
-
         </div>
     );
 }

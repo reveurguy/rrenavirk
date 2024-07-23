@@ -1,31 +1,49 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { Button, Select, SelectItem, Textarea } from "@nextui-org/react";
-import categories from "@/data/categories";
+import { categories, publish, PublishData } from "@/app/actions/publish"; // Import the server actions
 import { Input } from "@nextui-org/input";
-import { publish, PublishData } from '@/app/actions/publish'; // Import the server action
 
 interface Category {
-  name: string;
-  wordcount: number;
+  cname: string;
+  wordCount: number;
 }
 
 function Page() {
   const [wordCount, setWordCount] = useState(0);
   const [text, setText] = useState("");
   const [category, setCategory] = useState('');
+  const [categoryOptions, setCategoryOptions] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const result = await categories();
+      if (result.success) {
+        const cats = result.cats;
+        if(cats)
+        setCategoryOptions(result.cats);
+        else
+        alert("Error fetching categories");
+      } else {
+        alert("Error fetching categories");
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const textAreaWordCount = text.split(' ').filter(word => word).length;
-    
+
     if (textAreaWordCount <= wordCount) {
       const formData = new FormData(event.currentTarget);
       const data: PublishData = {
-        category,
+        cname: category,
         title: formData.get('title') as string,
         tags: formData.get('tags') as string,
         content: text,
+        wordcount: wordCount
       };
 
       // Log data to check if category is set
@@ -33,7 +51,7 @@ function Page() {
 
       // Call the server action
       const result = await publish(data);
-      if(result.success){
+      if (result.success) {
         alert("Published successfully!");
       } else {
         alert("Error publishing");
@@ -49,9 +67,9 @@ function Page() {
         {/* Editor */}
         <div className="md:basis-2/3 p-2 rounded-md bg-primary/20 h-[88vh]">
           <div className="border-2 border-slate-700 h-full rounded-md p-2">
-            <Textarea 
-              variant="underlined" 
-              value={text} 
+            <Textarea
+              variant="underlined"
+              value={text}
               onChange={(e) => setText(e.target.value)}
             />
           </div>
@@ -63,17 +81,21 @@ function Page() {
             <Select
               variant="flat"
               color="primary"
-              items={categories}
+              items={categoryOptions}
               label="Choose Category"
               value={category}
               onChange={(e) => {
-                const selectedCategory = categories.find((cat: Category) => cat.name === e.target.value);
-                setWordCount(selectedCategory?.wordcount || 0);
+                const selectedCategory = categoryOptions.find((cat: Category) => cat.cname === e.target.value);
+                setWordCount(selectedCategory?.wordCount || 0);
                 setCategory(e.target.value);
               }}
-              className=""
+             
             >
-              {(category: Category) => <SelectItem key={category.name} value={category.name}>{category.name}</SelectItem>}
+              {(category: Category) => (
+                <SelectItem key={category.cname} value={category.cname}>
+                  {category.cname}
+                </SelectItem>
+              )}
             </Select>
 
             <Input
@@ -82,6 +104,7 @@ function Page() {
               classNames={{ inputWrapper: "border-primary", input: "primary" }} // Add custom class for text color
               color="primary"
               name="title"
+               className=" text-white"
               required={true}
             />
 
@@ -91,6 +114,7 @@ function Page() {
               classNames={{ inputWrapper: "border-primary" }}
               color="primary"
               name="tags"
+               className=" text-white"
               required={true}
             />
           </div>

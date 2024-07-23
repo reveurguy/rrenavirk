@@ -11,18 +11,20 @@ import Authbuttons from "@/components/navbar/authbuttons";
 async function Navbar() {
     const session = await auth()
     return (
-        <div className="p-8 h-8 shadow-md flex justify-between items-center bg-slate-900 w-full">
-            {/*Searchbox*/}
-            {/*<div className="md:basis-1/3  flex justify-start"><SearchBox/></div>*/}
-            <div className="md:basis-1/3 ">   </div>
+        <div className="p-8 h-8 shadow-md flex justify-between items-center bg-slate-200 w-full">
+            
 
             {/*Branding*/}
             <div className="md:basis-1/3  gap-1 items-center flex justify-center">
                 <div className="flex items-center">
                     <Image src="/logo.png" alt="logo" width="100" height="100" quality="100" className="w-12 h-8"/>
-                    <p className="text-xl font-semibold text-slate-300">Rrenavirk</p>
+                    <p className="text-xl font-semibold text-slate-900">Rrenavirk</p>
                 </div>
             </div>
+
+            {/*Searchbox*/}
+            {/*<div className="md:basis-1/3  flex justify-start"><SearchBox/></div>*/}
+            <div className="md:basis-1/3 ">   </div>
 
             {/*Menu*/}
             <div className="md:basis-1/3 flex gap-2 justify-end">
