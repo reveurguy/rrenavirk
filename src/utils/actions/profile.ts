@@ -2,23 +2,16 @@
 
 import { auth } from "@/utils/auth";
 
-export const pushName = async (name:string) => {
-    const session = await auth();
-    if(!session?.user){
-        return {success:false};
-    }
-    session.user.id
-    const user = await prisma?.users.update({
-        where:{
-            id:session.user.id,
-        },
-        data:{
-            name: name
+export const editProfile = async (userId : string, fullname : string, bio : string) => {
+    console.log(userId, fullname, bio);
+    await prisma?.users.update({
+        where : {id : userId},
+        data : {
+            name : fullname,
+            bio : bio
         }
     })
-    if(!user) {return {success:false}}
-    return {success:true, name:user.name};
-};
+}
 
 
 export const getPostsData = async (id:string )=>{

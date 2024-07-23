@@ -8,13 +8,14 @@ datasource db {
 }
 
 model users {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  email     String    @unique
-  name      String?
-  num_posts Int?      @default(0)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  writings  writings[]
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  email       String     @unique
+  name        String?
+  bio         String?
+  num_posts   Int?       @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  writings    writings[]
   preferences String[]
 }
 
@@ -22,7 +23,7 @@ model writings {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   text      String
-  cname      String 
+  cname     String
   category  category @relation(fields: [cname], references: [cname])
   tags      String[]
   userId    String   @db.ObjectId
@@ -30,9 +31,9 @@ model writings {
   createdAt DateTime @default(now())
 }
 
-model category{
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  cname     String @unique
-  wordCount Int 
-  writings writings[]
+model category {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  cname     String     @unique
+  wordCount Int
+  writings  writings[]
 }

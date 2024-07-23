@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { Button, Select, SelectItem, Textarea } from "@nextui-org/react";
-import { categories, publish, PublishData } from "@/app/actions/publish"; // Import the server actions
+import { categories, publish, PublishData } from "@/utils/actions/publish"; // Import the server actions
 import { Input } from "@nextui-org/input";
 
 interface Category {

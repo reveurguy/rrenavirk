@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import {users} from "@prisma/client";
-import { getPostsData } from '@/app/actions/profile';
+import { getPostsData } from '@/utils/actions/profile';
 
 function UserProfileDashboard({user} : {user : users}) {
     const [posts, setPosts] = useState({})
