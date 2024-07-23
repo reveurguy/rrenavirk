@@ -1,5 +1,6 @@
 "use server"
 import { auth } from "@/utils/auth";
+import prisma from "@/utils/prismaindex";
 
 export interface PublishData {
     cname: string;
@@ -71,7 +72,7 @@ export const categories = async() =>{
     if(session && session.user?.id)
         { 
             if(prisma){
-           const cats = await prisma?.category.findMany({
+           const cats = await prisma.category.findMany({
                 select:{
                     cname:true,
                     wordCount:true,
