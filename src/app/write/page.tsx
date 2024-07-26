@@ -3,6 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { Button, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { categories, publish, PublishData } from "@/utils/actions/publish"; // Import the server actions
 import { Input } from "@nextui-org/input";
+import 'react-quill/dist/quill.snow.css'; 
+import dynamic from 'next/dynamic';
+import { redirect } from 'next/navigation';
+
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 interface Category {
   cname: string;
@@ -53,8 +59,11 @@ function Page() {
       const result = await publish(data);
       if (result.success) {
         alert("Published successfully!");
+        setText('')
+        setCategory('')
+        setWordCount(0)
       } else {
-        alert("Error publishing");
+        alert("Error publishing: Select category carefully");
       }
     } else {
       alert(`Word count exceeds the limit of ${wordCount} words.`);
@@ -67,10 +76,24 @@ function Page() {
         {/* Editor */}
         <div className="md:basis-2/3 p-2 rounded-md bg-primary/20 h-[88vh]">
           <div className="border-2 border-slate-700 h-full rounded-md p-2">
-            <Textarea
-              variant="underlined"
+            <ReactQuill
+              theme="snow"
               value={text}
-              onChange={(e) => setText(e.target.value)}
+              onChange={setText}
+              modules={{
+                toolbar: [
+                  [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+                  [{size: []}],
+                  ['bold', 'italic', 'underline', 'strike'],
+                  [{'list': 'ordered'}, {'list': 'bullet'}, ],
+                                                          
+                ]
+              }}
+              formats={[
+                'header', 'font', 'size',
+                'bold', 'italic', 'underline', 'strike',
+                'list', 'bullet', 
+              ]}
             />
           </div>
         </div>
@@ -104,7 +127,7 @@ function Page() {
               classNames={{ inputWrapper: "border-primary", input: "primary" }} // Add custom class for text color
               color="primary"
               name="title"
-               className=" text-white"
+              className="text-white"
               required={true}
             />
 
@@ -114,7 +137,7 @@ function Page() {
               classNames={{ inputWrapper: "border-primary" }}
               color="primary"
               name="tags"
-               className=" text-white"
+              className="text-white"
               required={true}
             />
           </div>

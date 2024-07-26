@@ -20,7 +20,7 @@ export const publish = async (data: PublishData)=> {
     const session = await auth();
 
     if (session && session.user?.id) {
-        const Tags = data.tags.split(',');
+        const Tags = data.tags.split(',').map(tag=>tag.trim());
 
         if (prisma) {
             const cat = await prisma.category.findUnique({
@@ -42,7 +42,7 @@ export const publish = async (data: PublishData)=> {
                     title: data.title,
                     cname: data.cname,
                     text: data.content,
-                    userId: session.user.id
+                    userId: session.user.id,
                 }
             });
 
