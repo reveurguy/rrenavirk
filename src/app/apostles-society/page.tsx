@@ -1119,7 +1119,7 @@ export default function ApostlesSociety() {
 // "use client";
 import SideCard from '@/components/sideCard';
 
-export function ExpandableCardDemo() {
+function ExpandableCardDemo() {
   const [active, setActive] = useState<(typeof cards)[number] | boolean | null>(
     null
   );
@@ -1278,7 +1278,7 @@ export function ExpandableCardDemo() {
   );
 }
 
-export const CloseIcon = () => {
+const CloseIcon = () => {
   return (
     <motion.svg
       initial={{
