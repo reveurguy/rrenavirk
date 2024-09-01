@@ -1,12 +1,12 @@
-"use client";
-import React, { useEffect, useState } from 'react';
-import { Button, Select, SelectItem, Textarea } from "@nextui-org/react";
-import { categories, publish, PublishData } from "@/utils/actions/publish"; // Import the server actions
-import { Input } from "@nextui-org/input";
-import 'react-quill/dist/quill.snow.css'; 
+'use client';
+import { Button } from '@/components/ui/button';
+import categories from '@/data/categories';
+import { publish, PublishData } from '@/utils/actions/publish'; // Import the server actions
+import { Input } from '@nextui-org/input';
+import { Select, SelectItem } from '@nextui-org/react';
 import dynamic from 'next/dynamic';
-import { redirect } from 'next/navigation';
-
+import React, { useEffect, useState } from 'react';
+import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -17,30 +17,22 @@ interface Category {
 
 function Page() {
   const [wordCount, setWordCount] = useState(0);
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const [category, setCategory] = useState('');
   const [categoryOptions, setCategoryOptions] = useState<Category[]>([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      const result = await categories();
-      if (result.success) {
-        const cats = result.cats;
-        if(cats)
-        setCategoryOptions(result.cats);
-        else
-        alert("Error fetching categories");
-      } else {
-        alert("Error fetching categories");
-      }
-    };
-
-    fetchCategories();
+    setCategoryOptions(
+      categories.map((category) => ({
+        cname: category.name,
+        wordCount: category.wordcount,
+      }))
+    );
   }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const textAreaWordCount = text.split(' ').filter(word => word).length;
+    const textAreaWordCount = text.split(' ').filter((word) => word).length;
 
     if (textAreaWordCount <= wordCount) {
       const formData = new FormData(event.currentTarget);
@@ -49,7 +41,7 @@ function Page() {
         title: formData.get('title') as string,
         tags: formData.get('tags') as string,
         content: text,
-        wordcount: wordCount
+        wordcount: wordCount,
       };
 
       // Log data to check if category is set
@@ -58,12 +50,12 @@ function Page() {
       // Call the server action
       const result = await publish(data);
       if (result.success) {
-        alert("Published successfully!");
-        setText('')
-        setCategory('')
-        setWordCount(0)
+        alert('Published successfully!');
+        setText('');
+        setCategory('');
+        setWordCount(0);
       } else {
-        alert("Error publishing: Select category carefully");
+        alert('Error publishing: Select category carefully');
       }
     } else {
       alert(`Word count exceeds the limit of ${wordCount} words.`);
@@ -72,48 +64,55 @@ function Page() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex flex-col md:flex-row gap-2 w-full p-1">
+      <div className="flex w-full flex-col gap-4 px-5 md:flex-row">
         {/* Editor */}
-        <div className="md:basis-2/3 p-2 rounded-md bg-primary/20 h-[88vh]">
-          <div className="border-2 border-slate-700 h-full rounded-md p-2">
+        <div className="h-[75vh] rounded-md p-2 md:basis-2/3">
+          <div className="h-full">
             <ReactQuill
               theme="snow"
               value={text}
               onChange={setText}
+              className="h-full"
               modules={{
                 toolbar: [
-                  [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-                  [{size: []}],
+                  [{ header: '1' }, { header: '2' }, { font: [] }],
+                  [{ size: [] }],
                   ['bold', 'italic', 'underline', 'strike'],
-                  [{'list': 'ordered'}, {'list': 'bullet'}, ],
-                                                          
-                ]
+                  [{ list: 'ordered' }, { list: 'bullet' }],
+                ],
               }}
               formats={[
-                'header', 'font', 'size',
-                'bold', 'italic', 'underline', 'strike',
-                'list', 'bullet', 
+                'header',
+                'font',
+                'size',
+                'bold',
+                'italic',
+                'underline',
+                'strike',
+                'list',
+                'bullet',
               ]}
             />
           </div>
         </div>
 
         {/* Options */}
-        <div className="md:basis-1/3 p-2 rounded-md bg-slate-900 h-[88vh] flex flex-col justify-between">
-          <div className="flex flex-col w-full gap-2">
+        <div className="flex h-[80vh] flex-col justify-between rounded-md p-2 md:basis-1/3">
+          <div className="flex w-full flex-col gap-4">
             <Select
               variant="flat"
-              color="primary"
+              // color="primary"
               items={categoryOptions}
               label="Choose Category"
+              className="tracking-tight transition-all ease-soft-spring"
               value={category}
               onChange={(e) => {
-                const selectedCategory = categoryOptions.find((cat: Category) => cat.cname === e.target.value);
+                const selectedCategory = categoryOptions.find(
+                  (cat: Category) => cat.cname === e.target.value
+                );
                 setWordCount(selectedCategory?.wordCount || 0);
                 setCategory(e.target.value);
-              }}
-             
-            >
+              }}>
               {(category: Category) => (
                 <SelectItem key={category.cname} value={category.cname}>
                   {category.cname}
@@ -123,26 +122,25 @@ function Page() {
 
             <Input
               label="Blog title"
-              variant="bordered"
-              classNames={{ inputWrapper: "border-primary", input: "primary" }} // Add custom class for text color
-              color="primary"
+              // classNames={{ inputWrapper: "border-default", input: "primary" }} // Add custom class for text color
               name="title"
-              className="text-white"
+              className="rounded-md tracking-tight"
               required={true}
             />
 
             <Input
-              label="Enter comma separated Tags"
-              variant="bordered"
-              classNames={{ inputWrapper: "border-primary" }}
-              color="primary"
+              label="Enter comma separated tags"
+              // classNames={{ inputWrapper: "border-primary" }}
               name="tags"
-              className="text-white"
+              className="rounded-md tracking-tight"
               required={true}
             />
           </div>
 
-          <Button type="submit" className="text-black bg-primary rounded-md w-full py-6 font-semibold">
+          <Button
+            variant="default"
+            type="submit"
+            className="w-full rounded-md py-6 text-lg font-semibold">
             Upload
           </Button>
         </div>

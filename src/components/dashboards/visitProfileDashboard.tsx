@@ -1,10 +1,7 @@
-import React from 'react';
-import {users} from "@prisma/client";
+import { users } from '@prisma/client';
 
-function VisitProfileDashboard({user} : {user : users}) {
-    return (
-        <div></div>
-    );
+function VisitProfileDashboard({ user }: { user: users }) {
+  return <div />;
 }
 
 export default VisitProfileDashboard;

@@ -1,17 +1,16 @@
 const categories = [
-    {
-        name : "prose",
-        wordcount : 150
-    },
-    {
-        name : "poem",
-        wordcount : 500
-    },
-    {
-        name : "story",
-        wordcount : 5000
-    },
-
-]
+  {
+    name: 'Prose',
+    wordcount: 150,
+  },
+  {
+    name: 'Poem',
+    wordcount: 500,
+  },
+  {
+    name: 'Story',
+    wordcount: 5000,
+  },
+];
 
 export default categories;

@@ -1,9 +1,5 @@
-import React from 'react';
-
-function Visitprofile(props) {
-    return (
-        <div>visit</div>
-    );
+function Visitprofile(props: any) {
+  return <div>visit</div>;
 }
 
 export default Visitprofile;
