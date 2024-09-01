@@ -30,8 +30,7 @@ export default async function Authbuttons() {
               'use server';
               await signIn('google');
             }}
-            className='flex items-center gap-2'
-            >
+            className="flex items-center gap-2">
             <NavigationMenu className="px-3">
               <NavigationMenuList>
                 <NavigationMenuItem>
