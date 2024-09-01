@@ -33,7 +33,7 @@ export default async function Authbuttons() {
             className="flex items-center gap-2">
             <NavigationMenu className="px-3">
               <NavigationMenuList>
-                <NavigationMenuItem>
+                {/* <NavigationMenuItem>
                   <Link href="/write" legacyBehavior passHref>
                     <NavigationMenuLink
                       className={navigationMenuTriggerStyle()}>
@@ -47,7 +47,7 @@ export default async function Authbuttons() {
                       </svg>
                     </NavigationMenuLink>
                   </Link>
-                </NavigationMenuItem>
+                </NavigationMenuItem> */}
                 <NavigationMenuItem>
                   <Link href={`/apostles-society`}>
                     <NavigationMenuLink
