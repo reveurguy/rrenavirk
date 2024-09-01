@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build && prisma generate",
+    "build": "prisma generate && next build",
     "dev": "next dev",
     "flt": "npm run format:write && npm run lint:fix && npm run typecheck",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx,json,md,css}\"",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx,json,md,css}\"",
+    "postinstall": "prisma generate",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "preview": "next build && next start",
