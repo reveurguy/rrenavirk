@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "next build && prisma generate",
     "dev": "next dev",
     "flt": "npm run format:write && npm run lint:fix && npm run typecheck",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx,json,md,css}\"",
